@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Suspect
 {
-    string sName, sGender, sHairColor, sTransport, sClothing;
+    string sName, sGender, sHairColor, sTransport, sClothing , sYear , sSpe;
     string[] locations = new string[5];
     int sHeight;
 
@@ -20,7 +21,9 @@ public class Suspect
         string hairColor,
         int height,
         string transport,
-        string clothing)
+        string clothing,
+        string year,
+        string spe)
     {
         sName = name;
         sGender = gender;
@@ -33,11 +36,32 @@ public class Suspect
         sHeight = height;
         sTransport = transport;
         sClothing = clothing;
+        sYear = year;
+        sSpe = spe;
     }
 
     public string getName()
     {
         return sName;
+    }
+    public string getTransport()
+    {
+        return sTransport;
+    }
+
+    public string getClothing()
+    {
+        return sClothing;
+    }
+
+    public string getYear()
+    {
+        return sYear;
+    }
+
+    public string getSpe()
+    {
+        return sSpe;
     }
 
 

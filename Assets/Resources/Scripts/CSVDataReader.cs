@@ -24,7 +24,7 @@ public class CSVDataReader : MonoBehaviour
         for (int i = 1; i < objects.Length - 1; i++)
         {
             string[] tmp = objects[i].Split(',');
-            Debug.Log(tmp.Length);
+            print(tmp.Length);
             listOfObjects.Add(new ObjectOfInterest(tmp[0], tmp[1], tmp[2]));
         }
 
@@ -32,7 +32,7 @@ public class CSVDataReader : MonoBehaviour
         {
             string[] tmp = suspects[i].Split(',');
             listOfSuspects.Add(
-                new Suspect(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7], int.Parse(tmp[8]), tmp[9], tmp[10])
+                new Suspect(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7], int.Parse(tmp[8]), tmp[9], tmp[10], tmp[11], tmp[12])
             );
         }
 
