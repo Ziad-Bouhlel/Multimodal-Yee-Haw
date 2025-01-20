@@ -167,6 +167,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.yeehaw
+    Standalone: com.DefaultCompany.yee-haw
   buildNumber:
     Standalone: 0
     VisionOS: 0
