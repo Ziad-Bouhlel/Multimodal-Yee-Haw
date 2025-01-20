@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2542742150388582982}
   - component: {fileID: 4802365921636880961}
   - component: {fileID: 8550196506264880066}
+  - component: {fileID: 700056290233982275}
   - component: {fileID: 3219212935691943459}
   - component: {fileID: 1332230848313250034}
-  - component: {fileID: 700056290233982275}
   m_Layer: 0
   m_Name: room01
   m_TagString: Untagged
@@ -161,26 +161,6 @@ MonoBehaviour:
           m_StringArgument: room01
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3219212935691943459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2772299450284634300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f4cce3c5b88617458be653b2572612a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!222 &1332230848313250034
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2772299450284634300}
-  m_CullTransparentMesh: 1
 --- !u!114 &700056290233982275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,3 +191,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3219212935691943459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2772299450284634300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4cce3c5b88617458be653b2572612a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!222 &1332230848313250034
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2772299450284634300}
+  m_CullTransparentMesh: 1

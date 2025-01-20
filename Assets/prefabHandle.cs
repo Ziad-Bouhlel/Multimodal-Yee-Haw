@@ -12,16 +12,18 @@ public class prefabHandle : MonoBehaviour
         // Récupérer le composant Button sur cet objet
         button = GetComponent<Button>();
 
+
         if (button != null)
         {
-            GetComponent<TextMesh>().color = Color.white;
+            GetComponent<Image>().color = Color.blue;
+
             button.onClick.AddListener(OnPrefabClicked);
         }
     }
 
     private void OnPrefabClicked()
     {
-        GetComponent<TextMesh>().color = Color.red;
+        GetComponent<Image>().color = Color.red;
 
 
 
