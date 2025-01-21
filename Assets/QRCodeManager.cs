@@ -91,7 +91,7 @@ public class QRCodeManager : MonoBehaviour
             TextMesh textMesh = textObj.AddComponent<TextMesh>();
             textMesh.text = newImage.referenceImage.name;
             Debug.Log($"Création TextMesh pour la salle: {newImage.referenceImage.name}"); // Debug
-            textMesh.fontSize = 100; // Ajustez selon vos besoins
+            textMesh.fontSize = 70; // Ajustez selon vos besoins
             textMesh.alignment = TextAlignment.Center;
             textMesh.anchor = TextAnchor.MiddleCenter;
             textMesh.color = Color.black;

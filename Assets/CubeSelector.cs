@@ -16,6 +16,9 @@ public class CubeSelector : MonoBehaviour
 
     private void OnMouseDown()
     {
+
+        
+
        // Si le cube est sélectionné, on le désélectionne
         if (isSelected==true)
         {
@@ -30,8 +33,11 @@ public class CubeSelector : MonoBehaviour
             if (SelectionManager.Instance.SelectRoom(this.transform))
             {
                 isSelected = true;
-                cubeRenderer.material.color = Color.blue;
+                cubeRenderer.material.color = Color.yellow;
                 Debug.Log($"Cube sélectionné : {gameObject.name}");
+                TimeSelector.OnSelect(gameObject.name);
+                Debug.Log($"Cube sélectionné : {gameObject.name}");
+                
             }
             else
             {

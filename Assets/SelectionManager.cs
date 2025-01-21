@@ -71,7 +71,7 @@ public class SelectionManager : MonoBehaviour
 
             // Calculer la distance entre les deux salles
             float distance = Vector3.Distance(room1.position, room2.position);
-            float estimatedTime = distance * 2; // Exemple : 2 secondes par unité de distance
+            float estimatedTime = distance * 10; // Exemple : 2 secondes par unité de distance
 
             // Afficher le résultat
             feedbackText.text = $"Temps estimé : {estimatedTime:F1} minutes";

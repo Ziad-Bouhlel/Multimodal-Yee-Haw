@@ -1,29 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class TimeSelector : MonoBehaviour
 {
     // Singleton Instance
     public static TimeSelector Instance { get; private set; }
 
-    //public Dropdown startTimeDropdown;
-    //public Dropdown endTimeDropdown;
+    public Dropdown startTimeDropdown;
+    public Dropdown endTimeDropdown;
     public Dropdown speDropdown;
     public Dropdown yearDropdown;
     public Dropdown transportDropdown;
 
     public Text warningMessage;
     public Text listStudents;
+    public Text menu;
 
-    private string roomSelect;
 
-    private int startTime;
-    private int endTime;
+    private static string selectedRoom;
+    public Text gotRoom;
 
-    private List<Suspect> listOfSuspects = new List<Suspect>();
-    private List<ObjectOfInterest> listOfObjects = new List<ObjectOfInterest>();
-    private List<string> roomList = new List<string>();
+    private static int startTime;
+    private static int endTime;
+
+    private static List<Suspect> listOfSuspects = new List<Suspect>();
+    private static List<ObjectOfInterest> listOfObjects = new List<ObjectOfInterest>();
     private List<string> speList = new List<string>();
     private List<string> yearList = new List<string>();
     private List<string> transportList = new List<string>();
@@ -43,7 +46,7 @@ public class TimeSelector : MonoBehaviour
 
     private void Start()
     {
-        /*
+        
         // Populate dropdowns with times
         List<string> times = new List<string>();
         for (int i = 13; i < 18; i++)
@@ -56,11 +59,8 @@ public class TimeSelector : MonoBehaviour
 
         endTimeDropdown.ClearOptions();
         endTimeDropdown.AddOptions(times);
-        */
-        // Load data
         LoadSuspects();
         LoadObjects();
-        LoadRooms();
         LoadSpe();
         LoadYear();
         LoadTransport();
@@ -95,32 +95,6 @@ public class TimeSelector : MonoBehaviour
                 listOfObjects.Add(new ObjectOfInterest(tmp[0], tmp[1], tmp[2]));
             }
         }
-    }
-
-    private void LoadRooms()
-    {
-        TextAsset suspectsFile = Resources.Load<TextAsset>("students");
-        string[] lines = suspectsFile.text.Split('\n');
-
-        HashSet<string> uniqueRooms = new HashSet<string>();
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            string[] cols = lines[i].Split(',');
-            if (cols.Length >= 6)
-            {
-                for (int j = 2; j <= 6; j++)
-                {
-                    string room = cols[j].Trim();
-                    if (!string.IsNullOrEmpty(room))
-                    {
-                        uniqueRooms.Add(room);
-                    }
-                }
-            }
-        }
-
-        roomList = new List<string>(uniqueRooms);
     }
 
     private void LoadSpe()
@@ -195,37 +169,36 @@ public class TimeSelector : MonoBehaviour
         transportDropdown.AddOptions(transportList);
     }
 
-    public List<string> GetPeopleAndObjects(string room, int startTime, int endTime, string selectedSpe, string selectedYear, string selectedTransport)
+    public static List<string> GetPeopleAndObjectsInRoom(string room, int startTime, int endTime)
     {
         List<string> results = new List<string>();
-
+        Debug.Log("times " + startTime + " / " + endTime);
         foreach (var suspect in listOfSuspects)
         {
-            print(suspect.getName());
-
-            if (!results.Contains(suspect.getName()) &&
-                    suspect.getSpe().Trim() == selectedSpe.Trim() &&
-                    suspect.getYear().Trim() == selectedYear.Trim() &&
-                    suspect.getTransport().Trim() == selectedTransport.Trim())
+            for (int time = startTime; time < endTime; time++)
             {
-                results.Add(suspect.getName() + " / " + suspect.getGender() + " / " + suspect.getHair() + " / " + suspect.getHeight() + " cm / " + suspect.getClothing());
+                string location = suspect.queryTime(time);
+                Debug.Log($"given={room.Trim().ToLower()}\n" +
+                 $"got = {location.Trim()} {suspect.getSpe()}\n" +
+                 $"bool = {location.Trim().ToLower() == room.Trim().ToLower()}");
+                if (location.Trim().ToLower() == room.Trim() && !results.Contains(suspect.getName()))
+                {
+                    results.Add(suspect.getName());
+                    break;
+                }
             }
         }
-
         foreach (var obj in listOfObjects)
         {
-            if (obj.oSourceLoc == room &&
-                int.TryParse(obj.oSellTime.Replace("h", ""), out int sellTime) &&
-                sellTime >= startTime && sellTime < endTime)
+            if (obj.oSourceLoc == room && int.TryParse(obj.oSellTime.Replace("h", ""), out int sellTime) && sellTime >= startTime && sellTime < endTime)
             {
                 results.Add(obj.oName);
             }
         }
-
         return results;
     }
 
-    public List<string> GetPeopleAndObjectsv2(string selectedSpe, string selectedYear, string selectedTransport)
+    public static List<string> GetPeopleAndObjectsv2(string selectedSpe, string selectedYear, string selectedTransport)
     {
         List<string> results = new List<string>();
 
@@ -247,7 +220,6 @@ public class TimeSelector : MonoBehaviour
 
     public void DisplayResults()
     {
-        string selectedRoom = "ee";
         string selectedSpe = speDropdown.options[speDropdown.value].text;
         string selectedYear = yearDropdown.options[yearDropdown.value].text;
         string selectedTransport = transportDropdown.options[transportDropdown.value].text;
@@ -256,15 +228,28 @@ public class TimeSelector : MonoBehaviour
 
         if (results.Count > 0)
         {
-            listStudents.text = $"Résultats pour les étudiants de la spécialité {selectedSpe} de l'année {selectedYear} utilisant le mode de transport : {selectedTransport} :\n";
+            listStudents.text = $"RÃ©sultats pour les Ã©tudiants de la spÃ©cialitÃ© {selectedSpe} de l'annÃ©e {selectedYear} utilisant le mode de transport : {selectedTransport} :\n";
             listStudents.text += string.Join("\n", results);
         }
         else
         {
-            listStudents.text = $"Aucun résultat pour les étudiants de la spécialité {selectedSpe} de l'année {selectedYear} utilisant le mode de transport : {selectedTransport}";
+            listStudents.text = $"Aucun rÃ©sultat pour les Ã©tudiants de la spÃ©cialitÃ© {selectedSpe} de l'annÃ©e {selectedYear} utilisant le mode de transport : {selectedTransport}";
         }
     }
 
+    public void DisplayResultsMenu()
+    {
+        List<string> results = GetPeopleAndObjectsInRoom(selectedRoom, startTime + 13, endTime + 13);
+        if (results.Count > 0)
+        {
+            menu.text = $"RÃ©sultats pour la salle {selectedRoom} entre {startTime + 13}h et {endTime + 13}h :\n";
+            menu.text += string.Join(", ", results);
+        }
+        else
+        {
+            menu.text = $"Aucun suspect ou objet trouvÃ© dans la salle {selectedRoom} pendant cette plage horaire.";
+        }
+    }
     public void OnSubmit()
     {
         warningMessage.text = "";
@@ -276,7 +261,7 @@ public class TimeSelector : MonoBehaviour
 
         if (startTime >= endTime)
         {
-            warningMessage.text = "Erreur : L'heure de début doit être inférieure à l'heure de fin.";
+            warningMessage.text = "Erreur : L'heure de dÃ©but doit Ãªtre infÃ©rieure Ã  l'heure de fin.";
             warningMessage.color = Color.red;
         }
         else
@@ -284,6 +269,36 @@ public class TimeSelector : MonoBehaviour
             warningMessage.text = "";
             DisplayResults();
         }*/
+    }
+
+    public void setRoom(string roomName)
+    {
+        gotRoom.text = roomName;
+    }
+    public static void OnSelect(string room)
+    {
+        selectedRoom = room.Split("_")[1];
+        Debug.Log("Room :" + selectedRoom);
+            if (Instance != null)
+            {
+                Instance.setRoom(selectedRoom);
+                startTime = Instance.startTimeDropdown.value;
+                endTime = Instance.endTimeDropdown.value;
+                if (startTime >= endTime)
+                {
+                    Instance.warningMessage.text = "Erreur : L'heure de dÃ©but doit Ãªtre infÃ©rieure Ã  l'heure de fin.";
+                    Instance.warningMessage.color = Color.red;
+                }
+                else
+                {
+                    Instance.warningMessage.text = "";
+                    Instance.DisplayResultsMenu();
+                }
+        }
+            else
+            {
+                Debug.LogError("TimeSelector instance is null. Ensure the script is properly initialized.");
+            }
     }
 
 
