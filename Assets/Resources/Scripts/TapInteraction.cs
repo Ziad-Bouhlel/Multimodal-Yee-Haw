@@ -13,13 +13,13 @@ public class TapInteraction : MonoBehaviour
 
     void Update()
     {
-        // Détection pour les clics de souris (PC)
+        // Dï¿½tection pour les clics de souris (PC)
         if (Input.GetMouseButtonDown(0))
         {
             DetectTapOrClick(Input.mousePosition);
         }
 
-        // Détection pour les tapes (mobile)
+        // Dï¿½tection pour les tapes (mobile)
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             DetectTapOrClick(Input.GetTouch(0).position);
@@ -36,8 +36,16 @@ public class TapInteraction : MonoBehaviour
             // Changer la couleur
             objectRenderer.material.color = Random.ColorHSV();
 
-            // Ajouter retour sonore et vibratoire
+            RoomSelectionManager roomSelectionManager = FindObjectOfType<RoomSelectionManager>();
+            if (roomSelectionManager != null)
+            {
+                roomSelectionManager.SelectRoom(gameObject);
+            }
+
+            #if UNITY_ANDROID || UNITY_IOS
             Handheld.Vibrate();
+            #endif
+
             AudioSource audio = GetComponent<AudioSource>();
             if (audio != null) audio.Play();
         }

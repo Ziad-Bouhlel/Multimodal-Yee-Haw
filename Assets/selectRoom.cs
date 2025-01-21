@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class giveRoom : MonoBehaviour
+public class selectRoom : MonoBehaviour
 {
     public Text roomSelected;
     // Start is called before the first frame update
