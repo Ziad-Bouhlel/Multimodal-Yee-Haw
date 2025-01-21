@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Suspect
 {
-    string sName, sGender, sHairColor, sTransport, sClothing , sYear , sSpe;
+    string sName, sGender, sHairColor, sTransport, sClothing, sYear, sSpe;
     string[] locations = new string[5];
     int sHeight;
 
@@ -64,13 +64,26 @@ public class Suspect
         return sSpe;
     }
 
+    public string getHair()
+    {
+        return sHairColor;
+    }
+    public int getHeight()
+    {
+        return sHeight;
+    }
+
+    public string getGender()
+    {
+        return sGender;
+    }
 
     // function to return the location of the person at a specific time
     public string queryTime(int time)
     {
         if (time <= 17 && time >= 13)
         {
-            return locations[time-13];
+            return locations[time - 13];
         }
         else return "time not existant";
     }

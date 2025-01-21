@@ -32,6 +32,7 @@ public class ImageTracker : MonoBehaviour
         // Ajouter un cadre autour des QR codes détectés
         foreach (var trackedImage in eventArgs.added)
         {
+            Debug.Log("Nom : "+trackedImage.name);
             var frame = Instantiate(lineRendererPrefab, trackedImage.transform);
             frame.transform.localPosition = Vector3.zero; // Centrer autour du QR code
             frame.transform.localScale = new Vector3(trackedImage.size.x, trackedImage.size.y, 1); // Ajuster à la taille du QR code

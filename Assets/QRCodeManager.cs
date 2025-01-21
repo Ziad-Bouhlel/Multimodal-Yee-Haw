@@ -70,7 +70,6 @@ public class QRCodeManager : MonoBehaviour
                 continue;
             }
 
-            // Calculer la position avec le cube au-dessus du QR code
             Vector3 position = newImage.transform.position;
             Vector2 imageSize = newImage.size;
             float cubeHeight = 0.001f; // Hauteur du cube
@@ -130,11 +129,10 @@ public class QRCodeManager : MonoBehaviour
             // Ajuster la taille du collider pour qu'il corresponde au cube
             BoxCollider boxCollider = cube.AddComponent<BoxCollider>();
             boxCollider.size = Vector3.one; // Le collider aura la même taille que l'échelle locale
-            
-            var selector = cube.AddComponent<CubeSelector>();
-            
-            // Log uniquement à la création initiale
-            Debug.Log($"Nouveau cube créé: {cube.name}");
+
+            Debug.Log($"Nouveau cube créé: {cube.name}" +
+                $"position = {cube.transform.position}" +
+                $"scale = {cube.transform.localScale}");
         }
 
         foreach (var updatedImage in eventArgs.updated)

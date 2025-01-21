@@ -7,15 +7,14 @@ public class TimeSelector : MonoBehaviour
     // Singleton Instance
     public static TimeSelector Instance { get; private set; }
 
-    public Dropdown startTimeDropdown;
-    public Dropdown endTimeDropdown;
+    //public Dropdown startTimeDropdown;
+    //public Dropdown endTimeDropdown;
     public Dropdown speDropdown;
     public Dropdown yearDropdown;
     public Dropdown transportDropdown;
 
     public Text warningMessage;
     public Text listStudents;
-    public Text roomSelected;
 
     private string roomSelect;
 
@@ -44,6 +43,7 @@ public class TimeSelector : MonoBehaviour
 
     private void Start()
     {
+        /*
         // Populate dropdowns with times
         List<string> times = new List<string>();
         for (int i = 13; i < 18; i++)
@@ -56,7 +56,7 @@ public class TimeSelector : MonoBehaviour
 
         endTimeDropdown.ClearOptions();
         endTimeDropdown.AddOptions(times);
-
+        */
         // Load data
         LoadSuspects();
         LoadObjects();
@@ -201,18 +201,14 @@ public class TimeSelector : MonoBehaviour
 
         foreach (var suspect in listOfSuspects)
         {
-            for (int time = startTime; time < endTime; time++)
-            {
-                string location = suspect.queryTime(time);
-                if (location.Trim() == room.Trim() &&
-                    !results.Contains(suspect.getName()) &&
+            print(suspect.getName());
+
+            if (!results.Contains(suspect.getName()) &&
                     suspect.getSpe().Trim() == selectedSpe.Trim() &&
                     suspect.getYear().Trim() == selectedYear.Trim() &&
                     suspect.getTransport().Trim() == selectedTransport.Trim())
-                {
-                    results.Add(suspect.getName() + "/" + suspect.getClothing());
-                    break;
-                }
+            {
+                results.Add(suspect.getName() + " / " + suspect.getGender() + " / " + suspect.getHair() + " / " + suspect.getHeight() + " cm / " + suspect.getClothing());
             }
         }
 
@@ -229,30 +225,54 @@ public class TimeSelector : MonoBehaviour
         return results;
     }
 
+    public List<string> GetPeopleAndObjectsv2(string selectedSpe, string selectedYear, string selectedTransport)
+    {
+        List<string> results = new List<string>();
+
+        foreach (var suspect in listOfSuspects)
+        {
+            print(suspect.getName());
+
+            if (!results.Contains(suspect.getName()) &&
+                    suspect.getSpe().Trim() == selectedSpe.Trim() &&
+                    suspect.getYear().Trim() == selectedYear.Trim() &&
+                    suspect.getTransport().Trim() == selectedTransport.Trim())
+            {
+                results.Add(suspect.getName() + " / " + suspect.getGender() + " / " + suspect.getHair() + " / " + suspect.getHeight() + " cm / " + suspect.getClothing());
+            }
+        }
+
+        return results;
+    }
+
     public void DisplayResults()
     {
-        string selectedRoom = roomSelected.text;
+        string selectedRoom = "ee";
         string selectedSpe = speDropdown.options[speDropdown.value].text;
         string selectedYear = yearDropdown.options[yearDropdown.value].text;
         string selectedTransport = transportDropdown.options[transportDropdown.value].text;
 
-        List<string> results = GetPeopleAndObjects(selectedRoom, startTime + 13, endTime + 13, selectedSpe, selectedYear, selectedTransport);
+        List<string> results = GetPeopleAndObjectsv2(selectedSpe, selectedYear, selectedTransport);
 
         if (results.Count > 0)
         {
-            listStudents.text = $"Résultats pour la salle {selectedRoom} entre {startTime + 13}h et {endTime + 13}h :\n";
-            listStudents.text += string.Join(", ", results);
+            listStudents.text = $"Résultats pour les étudiants de la spécialité {selectedSpe} de l'année {selectedYear} utilisant le mode de transport : {selectedTransport} :\n";
+            listStudents.text += string.Join("\n", results);
         }
         else
         {
-            listStudents.text = $"Aucun résultat pour la salle {selectedRoom} entre {startTime + 13}h et {endTime + 13}h.";
+            listStudents.text = $"Aucun résultat pour les étudiants de la spécialité {selectedSpe} de l'année {selectedYear} utilisant le mode de transport : {selectedTransport}";
         }
     }
 
     public void OnSubmit()
     {
-        startTime = startTimeDropdown.value;
-        endTime = endTimeDropdown.value;
+        warningMessage.text = "";
+        DisplayResults();
+
+        //startTime = startTimeDropdown.value;
+        //endTime = endTimeDropdown.value;
+        /*
 
         if (startTime >= endTime)
         {
@@ -263,12 +283,8 @@ public class TimeSelector : MonoBehaviour
         {
             warningMessage.text = "";
             DisplayResults();
-        }
+        }*/
     }
 
-    public void OnSelect(string room)
-    {
-        roomSelect = room;
-        roomSelected.text = room;
-    }
+
 }
